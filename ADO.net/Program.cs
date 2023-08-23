@@ -21,14 +21,14 @@ namespace ADO.net
             // new Program().InsertProductTable();
             //   new Program().UpdateProductTable();
             //  new Program().deleteProductTable();
-            //new Program().retreiveProductTable();  
+            new Program().retreiveProductTable();  
             //=======================================
             // new Program().InsertCustomerSp();
             //    new Program().UpdateCustomerSp();
             //new Program().DeleteCustomerSp();
-            new Program().GetCustomerSp();
+           // new Program().GetCustomerSp();
             Console.ReadKey();
-
+           
         }
         
             public void InsertProductType() 
@@ -45,6 +45,7 @@ namespace ADO.net
             //cmd.Parameters.Add("@lookupTypename", SqlDbType.VarChar).Value = "Added By SP";
             sqlConnetion.Open();
             int rowaffected = cmd.ExecuteNonQuery();
+            
             sqlConnetion.Close();
             }
          public void RetreiveProductType()
@@ -114,8 +115,13 @@ namespace ADO.net
             string query = "select * from Producttable";
             SqlCommand cmd=new SqlCommand(query,sqlConnection);
             sqlConnection.Open();
-      string a= Convert.ToString(cmd.ExecuteReader());
+   //   string a= Convert.ToString(cmd.ExecuteReader());
+          SqlDataReader r=cmd.ExecuteReader();
           
+            while (r.Read())
+            {
+                Console.WriteLine("Id:" + r["productid"]+" "+ "ProductName:" + r["ProductName"]+"   " +"Amount:"+ r["amount"]);
+            }
             sqlConnection.Close();
         }
         //------------------------------------------------------------
@@ -185,6 +191,89 @@ namespace ADO.net
             int row = cmd.ExecuteNonQuery();
             sqlConnection.Close();
         }
+
+        //-----------------------------------------
+        public void InsertPaymentMode()
+        {
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlconnection"].ToString());
+            string query = "insert into paymentmode ( CustomerId,productId,PaymentMethod,PaymentDate,totalbill) values (104,'Laptop',40000)";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+            int row = cmd.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+        public void UpdatePaymentMode()
+        {
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlconnection"].ToString());
+            string query = "updatePaymentMode set paymentmethode='Credit card' where paymentmodeid=301";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+            cmd.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+        public void DeletePaymentMode() {
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlconnection"].ToString());
+            string query = "delete from PaymentMode where paymentmodeid=319";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+            cmd.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public void getPaymentmode()
+        {
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlconnection"].ToString());
+            string query = "select top 1 totalbill from Paymentmode";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+            string row = Convert.ToString(cmd.ExecuteScalar());
+            sqlConnection.Close();
+        }
+        //---------------------------------------------------
+        public void Insertcart()
+        {
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlconnection"].ToString());
+            string query = "insert into CartHistory ( PurchaseDate,paymentmodeID) values (104,'Laptop',40000)";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+            int row = cmd.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+        public void Updatecart()
+        {
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlconnection"].ToString());
+            string query = "update CartHistory set PurchaseDate='2023-08-23' where CartId=501";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+            cmd.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+        public void Deletecart()
+        {
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlconnection"].ToString());
+            string query = "delete from  CartHistory where CartId=508";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+            cmd.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+        public void getCarthistory()
+        {
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["sqlconnection"].ToString());
+            string query = "select * from CartHistory";
+            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            sqlConnection.Open();
+           
+            SqlDataReader r = cmd.ExecuteReader();
+
+            while (r.Read())
+            {
+                Console.WriteLine("Id:" + r["CartId"] + " " + "PurchaseDate:" + r["PurchaseDate"] + "   " + "paymentmodeID:" + r["paymentmodeID"]);
+            }
+            sqlConnection.Close();
+        }
     }
-  
+    
 }
+  
+
